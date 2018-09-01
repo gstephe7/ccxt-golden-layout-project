@@ -25,8 +25,8 @@ export default {
   },
   methods: {
     selectPair () {
-      this.$store.dispatch('loadPair', this.pairValue)
-      this.$store.dispatch('allTrades')
+      this.$store.commit('LOAD_PAIR', this.pairValue)
+      this.$store.dispatch('loadTrades', this.pairValue)
     }
   }
 }

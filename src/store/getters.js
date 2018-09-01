@@ -5,6 +5,9 @@ export const getters = {
   exchangeById: (state, getters) => {
     return state.exchange
   },
+  exchangeName: (state, getters) => {
+    return state.exchange.id
+  },
   allPairs: (state, getters) => {
     return state.pairs
   },

@@ -2,7 +2,7 @@
   <table>
     <tr>
       <th>Size</th>
-      <th class="text-center">Price (USD)</th>
+      <th class="text-center">Price ({{ currency }})</th>
       <th class="text-right">Time</th>
       <th></th>
     </tr>
@@ -25,6 +25,15 @@ export default {
   computed: {
     allTrades () {
       return this.$store.getters.allTrades
+    },
+    currency () {
+      let pair = this.$store.getters.returnPair
+      if (pair.length > 1) {
+        let startIndex = pair.indexOf('/') + 1
+        return pair.slice(startIndex, 8)
+      } else {
+        return 'USD'
+      }
     }
   }
 }

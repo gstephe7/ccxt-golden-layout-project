@@ -5,7 +5,7 @@ import {
   EXCHANGE_BY_ID,
   LOAD_MARKETS,
   LOAD_PAIR,
-  ALL_TRADES,
+  LOAD_TRADES,
   UPDATE_TRADES
 } from './mutation-types'
 
@@ -23,7 +23,14 @@ export const actions = {
   loadPair ({commit}, payload) {
     commit(LOAD_PAIR, payload)
   },
-  async allTrades ({commit}) {
-    commit(ALL_TRADES)
+  async loadTrades ({commit}, payload) {
+    let exchangeName = this.getters.exchangeName
+    let Exchange = ccxt[exchangeName]
+    let newExchange = new Exchange()
+    let pair = payload
+    let limit = 20
+    let since = -86400000
+    let trades = await newExchange.fetchTrades(pair, since, limit)
+    commit(LOAD_TRADES, trades)
   }
 }
