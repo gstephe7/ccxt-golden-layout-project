@@ -6,7 +6,7 @@ import {
   LOAD_MARKETS,
   LOAD_PAIR,
   LOAD_TRADES,
-  UPDATE_TRADES
+  CLEAR_STATE
 } from './mutation-types.js'
 
 export const mutations = {
@@ -14,29 +14,24 @@ export const mutations = {
     state.exchanges = ccxt.exchanges
   },
   [EXCHANGE_BY_ID] (state, payload) {
-    let ExchangeClass = ccxt[payload]
-    let exchange = new ExchangeClass()
-    state.exchange = exchange
+    state.exchange = payload
     console.log(state.exchange)
   },
-  [LOAD_MARKETS] (state) {
-    let exchange = state.exchange
-    exchange.fetchMarkets()
-    let symbols = exchange.symbols
-    state.pairs = symbols
-    console.log(state.pairs)
+  [LOAD_MARKETS] (state, payload) {
+    state.pairs = payload
   },
   [LOAD_PAIR] (state, payload) {
     state.pair = payload
-    console.log(state.pair)
+    this.dispatch('updateTrades')
   },
   [LOAD_TRADES] (state, payload) {
     let trades = payload
-    let newTrades = [];
+    let newTrades = []
     trades.forEach(trade => {
       let startIndex = trade.datetime.indexOf('T') + 1
       let endIndex = trade.datetime.indexOf('.')
       newTrades.push({
+        id: trade.id,
         amount: trade.amount.toFixed(5),
         price: trade.price.toFixed(2),
         time: trade.datetime.slice(startIndex, endIndex),
@@ -44,5 +39,12 @@ export const mutations = {
       })
     })
     state.trades = newTrades.reverse()
+  },
+  [CLEAR_STATE] (state) {
+    state.exchange = {}
+    state.pairs = []
+    state.pair = ''
+    state.trades = []
+    this.dispatch('updateTrades')
   }
 }

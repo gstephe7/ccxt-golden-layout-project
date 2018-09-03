@@ -10,7 +10,7 @@
       <td>{{ trade.amount }}</td>
       <td class="text-center trade-price">{{ trade.price }}</td>
       <td class="text-right trade-time">{{ trade.time }}</td>
-      <td class="progress-bar" :style="{ width: trade.size + '%' }"></td>
+      <td class="progress-bar" :style="{ width: adjustWidth(trade.size) + '%' }"></td>
     </tr>
   </table>
 </template>
@@ -24,7 +24,9 @@ export default {
   },
   computed: {
     allTrades () {
-      return this.$store.getters.allTrades
+      if (this.$store.getters.returnPair) {
+        return this.$store.getters.allTrades
+      }
     },
     currency () {
       let pair = this.$store.getters.returnPair
@@ -33,6 +35,15 @@ export default {
         return pair.slice(startIndex, 8)
       } else {
         return 'USD'
+      }
+    }
+  },
+  methods: {
+    adjustWidth (value) {
+      if (value > 400) {
+        return 400
+      } else {
+        return value
       }
     }
   }
@@ -53,7 +64,7 @@ export default {
 
   .progress-bar {
     height: 20px;
-    background-color: rgba(67, 153, 87, .2);
+    background-color: rgba(67, 153, 87, .15);
     float: right;
   }
 
@@ -72,6 +83,6 @@ export default {
   }
 
   tr:nth-of-type(2n+2) :nth-child(4) {
-    background-color: rgba(67, 110, 153, .2);
+    background-color: rgba(67, 110, 153, .15);
   }
 </style>

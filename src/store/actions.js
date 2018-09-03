@@ -6,10 +6,10 @@ import {
   LOAD_MARKETS,
   LOAD_PAIR,
   LOAD_TRADES,
-  UPDATE_TRADES
+  CLEAR_STATE
 } from './mutation-types'
 
-const proxy = process.env.http_proxy || 'http://168.63.76.32:3128'
+const proxy = process.env.http_proxy || 'http://168.63.76.32:3128/'
 const agent = new HttpsProxyAgent(proxy)
 
 export const actions = {
@@ -17,20 +17,39 @@ export const actions = {
     commit(ALL_EXCHANGES)
   },
   exchangeById ({commit}, payload) {
-    commit(EXCHANGE_BY_ID, payload)
-    commit(LOAD_MARKETS)
+    commit(CLEAR_STATE)
+    let ExchangeClass = ccxt[payload]
+    let exchange = new ExchangeClass({agent})
+    commit(EXCHANGE_BY_ID, exchange)
+    this.dispatch('loadMarkets', payload)
+  },
+  async loadMarkets ({commit}, payload) {
+    let ExchangeClass = ccxt[payload]
+    let exchange = new ExchangeClass({agent})
+    await exchange.loadMarkets()
+    let symbols = exchange.symbols
+    commit(LOAD_MARKETS, symbols)
   },
   loadPair ({commit}, payload) {
     commit(LOAD_PAIR, payload)
   },
-  async loadTrades ({commit}, payload) {
+  async loadTrades ({commit}) {
     let exchangeName = this.getters.exchangeName
-    let Exchange = ccxt[exchangeName]
-    let newExchange = new Exchange()
-    let pair = payload
+    let ExchangeClass = ccxt[exchangeName]
+    let exchange = new ExchangeClass({agent})
+    let pair = this.getters.returnPair
     let limit = 20
     let since = -86400000
-    let trades = await newExchange.fetchTrades(pair, since, limit)
+    let trades = await exchange.fetchTrades(pair, since, limit)
     commit(LOAD_TRADES, trades)
+  },
+  updateTrades () {
+    let reload
+    clearInterval(this.reload)
+    if (this.getters.returnPair) {
+      this.reload = setInterval(() => {
+        this.dispatch('loadTrades')
+      }, 2000)
+    }
   }
 }

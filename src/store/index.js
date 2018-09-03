@@ -12,7 +12,7 @@ export default new Vuex.Store({
     exchanges: [],
     exchange: {},
     pairs: [],
-    pair: {},
+    pair: '',
     trades: []
   },
   getters: getters,
