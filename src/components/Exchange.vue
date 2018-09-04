@@ -57,10 +57,12 @@ export default {
     font-weight: 500;
     padding: 10px;
     width: 75%;
+    transition: 250ms all;
   }
 
   select:focus {
     outline: 0;
+    transform: scale(1.03);
   }
 
   .selectFilled {

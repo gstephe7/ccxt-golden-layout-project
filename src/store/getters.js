@@ -11,7 +11,7 @@ export const getters = {
   loadingMarkets: (state, getters) => {
     return state.loadingMarkets
   },
-  failedMarkets: (state) => {
+  failedMarkets: (state, getters) => {
     return state.failedMarkets
   },
   allPairs: (state, getters) => {
@@ -22,6 +22,9 @@ export const getters = {
   },
   loadingTrades: (state, getters) => {
     return state.loadingTrades
+  },
+  failedTrades: (state, getters) => {
+    return state.failedTrades
   },
   allTrades: (state, getters) => {
     return state.trades
