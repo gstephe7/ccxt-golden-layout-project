@@ -2,12 +2,17 @@
   <div id="pair">
     <h1 class="text-center">PAIR</h1>
     <div class="text-center">
-      <select v-model="pairValue" @change="selectPair" :class="{ selectFilled : pairValue }">
-        <option v-if="notAvailable" disabled selected>Not Available</option>
+      <select v-if="loadingMarkets">
+        <option disabled selected>...loading</option>
+      </select>
+      <select v-else-if="notAvailable">
+        <option disabled selected>not available</option>
+      </select>
+      <select v-else v-model="pairValue" @change="selectPair" :class="{ selectFilled : pairValue }">
+        <option v-if="!pairs" disabled selected>Not Available</option>
         <option v-else value="" class="placeholderOption" disabled selected>Ex: BTC/USD</option>
         <option v-for="pair in pairs" :key="pair" :value="pair">{{ pair }}</option>
       </select>
-      <h5 class="errorMsg text-center" v-if="notAvailable">exchange not available</h5>
     </div>
   </div>
 </template>
@@ -25,14 +30,17 @@ export default {
         return this.$store.getters.allPairs
       }
     },
-    notAvailable () {
-      if (this.$store.getters.exchangeName && this.pairs && this.pairs.length === 0) {
-        console.log(this.pairs)
-        return true
-      } else if (this.$store.getters.exchangeName && !this.pairs) {
+    loadingMarkets () {
+      if (this.$store.getters.loadingMarkets) {
         return true
       } else {
-        console.log(this.pairs)
+        return false
+      }
+    },
+    notAvailable () {
+      if (this.$store.getters.failedMarkets) {
+        return true
+      } else {
         return false
       }
     }

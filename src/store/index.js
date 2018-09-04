@@ -11,8 +11,12 @@ export default new Vuex.Store({
   state: {
     exchanges: [],
     exchange: {},
+    loadingMarkets: false,
+    failedMarkets: false,
     pairs: [],
     pair: '',
+    loadingTrades: false,
+    failedTrades: false,
     trades: []
   },
   getters: getters,

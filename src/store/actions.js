@@ -3,8 +3,10 @@ import HttpsProxyAgent from 'https-proxy-agent'
 import {
   ALL_EXCHANGES,
   EXCHANGE_BY_ID,
+  LOADING_MARKETS,
   LOAD_MARKETS,
   LOAD_PAIR,
+  LOADING_TRADES,
   LOAD_TRADES,
   CLEAR_STATE
 } from './mutation-types'
@@ -24,6 +26,7 @@ export const actions = {
     this.dispatch('loadMarkets', payload)
   },
   async loadMarkets ({commit}, payload) {
+    commit(LOADING_MARKETS)
     let ExchangeClass = ccxt[payload]
     let exchange = new ExchangeClass({agent})
     await exchange.loadMarkets()
@@ -43,7 +46,8 @@ export const actions = {
     let trades = await exchange.fetchTrades(pair, since, limit)
     commit(LOAD_TRADES, trades)
   },
-  updateTrades () {
+  updateTrades ({commit}) {
+    commit(LOADING_TRADES)
     let reload
     clearInterval(this.reload)
     if (this.getters.returnPair) {

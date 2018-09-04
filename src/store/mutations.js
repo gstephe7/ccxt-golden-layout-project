@@ -3,8 +3,10 @@ import ccxt from 'ccxt'
 import {
   ALL_EXCHANGES,
   EXCHANGE_BY_ID,
+  LOADING_MARKETS,
   LOAD_MARKETS,
   LOAD_PAIR,
+  LOADING_TRADES,
   LOAD_TRADES,
   CLEAR_STATE
 } from './mutation-types.js'
@@ -15,16 +17,23 @@ export const mutations = {
   },
   [EXCHANGE_BY_ID] (state, payload) {
     state.exchange = payload
-    console.log(state.exchange)
+  },
+  [LOADING_MARKETS] (state) {
+    state.loadingMarkets = true
   },
   [LOAD_MARKETS] (state, payload) {
+    state.loadingMarkets = false
     state.pairs = payload
   },
   [LOAD_PAIR] (state, payload) {
     state.pair = payload
     this.dispatch('updateTrades')
   },
+  [LOADING_TRADES] (state) {
+    state.loadingTrades = true
+  },
   [LOAD_TRADES] (state, payload) {
+    state.loadingTrades = false
     let trades = payload
     let newTrades = []
     trades.forEach(trade => {
