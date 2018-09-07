@@ -1,11 +1,11 @@
-<template>
-  <div id="pair">
+<template id="pair">
+  <div>
     <h1 class="text-center">PAIR</h1>
     <div class="text-center">
       <select v-if="loadingMarkets">
         <option disabled selected>...loading</option>
       </select>
-      <select v-else-if="notAvailable">
+      <select class="errorMsg" v-else-if="failedMarkets">
         <option disabled selected>not available</option>
       </select>
       <select v-else v-model="pairValue" @change="selectPair" :class="{ selectFilled : pairValue }">
@@ -37,12 +37,8 @@ export default {
         return false
       }
     },
-    notAvailable () {
-      if (this.$store.getters.failedMarkets) {
-        return true
-      } else {
-        return false
-      }
+    failedMarkets () {
+      return this.$store.getters.failedMarkets
     }
   },
   methods: {
@@ -75,10 +71,12 @@ export default {
     font-weight: 500;
     padding: 10px;
     width: 75%;
+    transition: 250ms all;
   }
 
   select:focus {
     outline: 0;
+    transform: scale(1.03);
   }
 
   .selectFilled {
@@ -106,6 +104,6 @@ export default {
   }
 
   .errorMsg {
-    color: #d82b2b;
+    color: rgba(209, 74, 54, .5);
   }
 </style>

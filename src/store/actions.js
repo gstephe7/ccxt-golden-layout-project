@@ -4,9 +4,11 @@ import {
   ALL_EXCHANGES,
   EXCHANGE_BY_ID,
   LOADING_MARKETS,
+  FAILED_MARKETS,
   LOAD_MARKETS,
   LOAD_PAIR,
   LOADING_TRADES,
+  FAILED_TRADES,
   LOAD_TRADES,
   CLEAR_STATE
 } from './mutation-types'
@@ -29,7 +31,11 @@ export const actions = {
     commit(LOADING_MARKETS)
     let ExchangeClass = ccxt[payload]
     let exchange = new ExchangeClass({agent})
-    await exchange.loadMarkets()
+    try {
+      await exchange.loadMarkets()
+    } catch (err) {
+      commit(FAILED_MARKETS)
+    }
     let symbols = exchange.symbols
     commit(LOAD_MARKETS, symbols)
   },
@@ -43,14 +49,19 @@ export const actions = {
     let pair = this.getters.returnPair
     let limit = 20
     let since = -86400000
-    let trades = await exchange.fetchTrades(pair, since, limit)
+    let trades = []
+    try {
+      trades = await exchange.fetchTrades(pair, since, limit)
+    } catch (err) {
+      commit(FAILED_TRADES)
+    }
     commit(LOAD_TRADES, trades)
   },
   updateTrades ({commit}) {
-    commit(LOADING_TRADES)
     let reload
     clearInterval(this.reload)
     if (this.getters.returnPair) {
+      commit(LOADING_TRADES)
       this.reload = setInterval(() => {
         this.dispatch('loadTrades')
       }, 2000)

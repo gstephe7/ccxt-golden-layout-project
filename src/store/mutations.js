@@ -4,9 +4,11 @@ import {
   ALL_EXCHANGES,
   EXCHANGE_BY_ID,
   LOADING_MARKETS,
+  FAILED_MARKETS,
   LOAD_MARKETS,
   LOAD_PAIR,
   LOADING_TRADES,
+  FAILED_TRADES,
   LOAD_TRADES,
   CLEAR_STATE
 } from './mutation-types.js'
@@ -17,9 +19,15 @@ export const mutations = {
   },
   [EXCHANGE_BY_ID] (state, payload) {
     state.exchange = payload
+    state.failedTrades = false
   },
   [LOADING_MARKETS] (state) {
+    state.failedMarkets = false
     state.loadingMarkets = true
+  },
+  [FAILED_MARKETS] (state) {
+    state.loadingMarkets = false
+    state.failedMarkets = true
   },
   [LOAD_MARKETS] (state, payload) {
     state.loadingMarkets = false
@@ -30,7 +38,12 @@ export const mutations = {
     this.dispatch('updateTrades')
   },
   [LOADING_TRADES] (state) {
+    state.failedTrades = false
     state.loadingTrades = true
+  },
+  [FAILED_TRADES] (state) {
+    state.loadingTrades = false
+    state.failedTrades = true
   },
   [LOAD_TRADES] (state, payload) {
     state.loadingTrades = false

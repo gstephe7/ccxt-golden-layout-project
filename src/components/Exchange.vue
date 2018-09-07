@@ -1,5 +1,5 @@
-<template>
-  <div id="exchange">
+<template id="exchange">
+  <div>
     <h1 class="text-center">EXCHANGE</h1>
     <div class="text-center">
       <select v-model="exchangeValue" @change="selectExchange" :class="{ selectFilled : exchangeValue }">
@@ -57,10 +57,12 @@ export default {
     font-weight: 500;
     padding: 10px;
     width: 75%;
+    transition: 250ms all;
   }
 
   select:focus {
     outline: 0;
+    transform: scale(1.03);
   }
 
   .selectFilled {

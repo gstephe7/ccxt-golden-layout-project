@@ -1,5 +1,5 @@
-<template>
-  <div id="trades">
+<template id="trades">
+  <div>
     <h1 class="text-center">TRADES <sup>live</sup></h1>
     <TradesTable></TradesTable>
   </div>

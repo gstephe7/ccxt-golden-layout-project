@@ -22,12 +22,5 @@ export default {
 </script>
 
 <style>
-  @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-  @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
 
-  body {
-    margin: 0;
-    overflow-x: hidden;
-    font-family: 'Noto Sans', sans-serif;
-  }
 </style>
