@@ -9,9 +9,6 @@ Vue.config.productionTip = false
 
 let config = {
   content: [{
-    state: {
-
-    },
     type: 'column',
     content: [{
       type: 'component',
