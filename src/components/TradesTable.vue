@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  props: ['layout'],
   data () {
     return {
       trades: []
@@ -94,9 +95,5 @@ export default {
 
   tr:nth-of-type(2n+2) :nth-child(4) {
     background-color: rgba(67, 110, 153, .15);
-  }
-
-  .errorMsg {
-    color: rgba(209, 74, 54, .9);
   }
 </style>

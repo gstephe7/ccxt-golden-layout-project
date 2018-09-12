@@ -5,3 +5,51 @@ body {
   overflow-x: hidden;
   font-family: 'Noto Sans', sans-serif;
 }
+
+select {
+  background-color: #fcd697;
+  color: rgba(0,0,0,.2);
+  margin-top: 20px;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 5px;
+  font-size: 28px;
+  font-weight: 500;
+  padding: 10px;
+  width: 60%;
+  max-width: 300px;
+  transition: 250ms all;
+}
+
+select:focus {
+  outline: 0;
+  box-shadow: 3px 3px rgba(0,0,0,.05);
+}
+
+.selectFilled {
+  color: #3d3d3d;
+}
+
+option {
+  background-color: #fcd697;
+  color: #3d3d3d;
+  margin-top: 20px;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 5px;
+  font-size: 28px;
+  font-weight: 500;
+  padding: 10px;
+  width: 60%;
+  max-width: 300px;
+}
+
+option:focus {
+  outline: 0;
+}
+
+.placeholderOption {
+  color: rgba(0,0,0,.2);
+}
+
+.errorMsg {
+  color: rgba(209, 74, 54, .9);
+}

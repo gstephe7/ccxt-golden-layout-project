@@ -11,6 +11,7 @@ import Exchange from '@/components/Exchange'
 import Pair from '@/components/Pair'
 import Trades from '@/components/Trades'
 
+
 export default {
   name: 'App',
   components: {

@@ -1,5 +1,5 @@
-<template id="exchange">
-  <div>
+<template>
+  <div id="exchange">
     <h1 class="text-center">EXCHANGE</h1>
     <div class="text-center">
       <select v-model="exchangeValue" @change="selectExchange" :class="{ selectFilled : exchangeValue }">
@@ -12,14 +12,10 @@
 
 <script>
 export default {
+  props: ['layout'],
   data () {
     return {
       exchangeValue: ''
-    }
-  },
-  created () {
-    if (this.exchanges.length === 0) {
-      this.$store.dispatch('allExchanges')
     }
   },
   computed: {
@@ -27,9 +23,14 @@ export default {
       return this.$store.getters.allExchanges
     }
   },
+  created () {
+    if (this.exchanges.length === 0) {
+      this.layout.eventHub.emit('allExchanges')
+    }
+  },
   methods: {
     selectExchange () {
-      this.$store.dispatch('exchangeById', this.exchangeValue)
+      this.layout.eventHub.emit('selectExchange', this.exchangeValue)
     }
   }
 }
@@ -42,50 +43,8 @@ export default {
   }
 
   h1 {
-    margin-top: 30vh;
+    padding-top: 20px;
     color: #f9f9f9;
-    font-size: 55px;
-  }
-
-  select {
-    background-color: #fcd697;
-    color: rgba(0,0,0,.2);
-    margin-top: 20px;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 5px;
-    font-size: 28px;
-    font-weight: 500;
-    padding: 10px;
-    width: 75%;
-    transition: 250ms all;
-  }
-
-  select:focus {
-    outline: 0;
-    transform: scale(1.03);
-  }
-
-  .selectFilled {
-    color: #3d3d3d;
-  }
-
-  option {
-    background-color: #fcd697;
-    color: #3d3d3d;
-    margin-top: 20px;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 5px;
-    font-size: 28px;
-    font-weight: 500;
-    padding: 10px;
-    width: 75%;
-  }
-
-  option:focus {
-    outline: 0;
-  }
-
-  .placeholderOption {
-    color: rgba(0,0,0,.2);
+    font-size: 50px;
   }
 </style>

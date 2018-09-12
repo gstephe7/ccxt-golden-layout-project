@@ -1,7 +1,7 @@
-<template id="trades">
-  <div>
+<template>
+  <div id="trades">
     <h1 class="text-center">TRADES <sup>live</sup></h1>
-    <TradesTable></TradesTable>
+    <TradesTable :layout="layout"></TradesTable>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
 import TradesTable from '@/components/TradesTable'
 
 export default {
+  props: ['layout'],
   components: { TradesTable }
 }
 </script>
@@ -20,9 +21,9 @@ export default {
   }
 
   h1 {
-    margin-top: 20px;
+    padding-top: 20px;
     color: #f9f9f9;
-    font-size: 55px;
+    font-size: 50px;
   }
 
   sup {
